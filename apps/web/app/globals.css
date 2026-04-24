@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --border: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+  }
+
+  .dark {
+    --bg: #080d1a;
+    --surface: #0e1628;
+    --surface-2: #152035;
+    --border: #1e2d4a;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #475569;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: "Inter", system-ui, sans-serif;
+    @apply transition-colors duration-200;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-navy-600 rounded-full;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-navy-500;
+  }
+}
+
+@layer components {
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    @apply rounded-2xl;
+  }
+
+  .card-hover {
+    @apply card transition-all duration-200 hover:border-brand-500/40 hover:shadow-lg;
+  }
+
+  .dark .card-hover:hover {
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  .surface {
+    background-color: var(--surface);
+  }
+
+  .surface-2 {
+    background-color: var(--surface-2);
+  }
+
+  .border-subtle {
+    border-color: var(--border);
+  }
+
+  .gain {
+    @apply text-gain;
+  }
+
+  .loss {
+    @apply text-loss;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-500 hover:bg-brand-600 text-white shadow-sm;
+  }
+
+  .btn-ghost {
+    @apply btn hover:bg-navy-700/50 text-secondary;
+  }
+
+  .dark .btn-ghost:hover {
+    @apply bg-white/5;
+  }
+
+  .score-ring {
+    transform-origin: center;
+    transform: rotate(-90deg);
+  }
+}
+
+@layer utilities {
+  .glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

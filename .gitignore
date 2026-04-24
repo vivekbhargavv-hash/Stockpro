@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Next.js
+apps/web/.next/
+apps/web/out/
+
+# Build outputs
+dist/
+build/
+
+# Env files
+.env
+.env.local
+.env.production
+apps/web/.env.local
+apps/api/.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Vercel
+.vercel/
