@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__68bff64d-f23d-42b9-b16f-c6bb0a2c3397__list_teams",
+      "mcp__68bff64d-f23d-42b9-b16f-c6bb0a2c3397__list_projects",
+      "mcp__68bff64d-f23d-42b9-b16f-c6bb0a2c3397__deploy_to_vercel",
+      "Bash(npx vercel *)",
+      "Bash(curl -s https://stockpro-production-e8a9.up.railway.app/health)",
+      "Bash(curl -sk https://stockpro-production-e8a9.up.railway.app/health)",
+      "Bash(curl -k https://stockpro-production-e8a9.up.railway.app/health)"
+    ]
+  }
+}
