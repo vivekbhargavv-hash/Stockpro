@@ -3,7 +3,6 @@ import pandas as pd
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from signals.registry import SIGNALS, SIGNAL_META
 from data.nse500 import NSE_500
-from data.yf_session import get_session
 from db.supabase_client import upsert_signal, fetch_signal, fetch_all_signals
 from cache.redis_client import get_cached, set_cached, invalidate_signal
 
@@ -14,28 +13,19 @@ BATCH_SIZE = 50  # tickers per yfinance download call
 
 def _download_batch(tickers: list[str]) -> dict[str, pd.DataFrame]:
     joined = " ".join(tickers)
-    raw = yf.download(
-        joined,
-        period="1y",
-        group_by="ticker",
-        auto_adjust=True,
-        threads=True,
-        progress=False,
-        session=get_session(),
-    )
+    raw = yf.download(joined, period="1y", auto_adjust=True, progress=False)
     result: dict[str, pd.DataFrame] = {}
-    if len(tickers) == 1:
-        t = tickers[0]
-        if not raw.empty:
-            result[t] = raw
-    else:
-        for t in tickers:
-            try:
-                df = raw[t].dropna(how="all")
-                if not df.empty and len(df) >= 20:
-                    result[t] = df
-            except (KeyError, TypeError):
-                pass
+    if raw.empty:
+        return result
+
+    # yfinance now always returns MultiIndex(field, ticker) columns
+    for t in tickers:
+        try:
+            df = raw.xs(t, axis=1, level=1).dropna(how="all")
+            if not df.empty and len(df) >= 20:
+                result[t] = df
+        except (KeyError, TypeError):
+            pass
     return result
 
 
@@ -47,7 +37,10 @@ def compute_signal(signal_type: str) -> list[dict]:
 
     for i in range(0, len(NSE_500), BATCH_SIZE):
         batch = NSE_500[i: i + BATCH_SIZE]
-        data = _download_batch(batch)
+        try:
+            data = _download_batch(batch)
+        except Exception:
+            continue
         for ticker, df in data.items():
             try:
                 record = signal_module.run(ticker, df)
