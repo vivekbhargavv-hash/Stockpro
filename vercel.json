@@ -8,11 +8,5 @@
       "path": "/api/cron/nightly",
       "schedule": "0 11 * * 1-5"
     }
-  ],
-  "experimentalServices": {
-    "api": {
-      "entrypoint": "apps/api",
-      "routePrefix": "/"
-    }
-  }
+  ]
 }
