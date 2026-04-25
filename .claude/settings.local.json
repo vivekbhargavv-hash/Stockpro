@@ -17,7 +17,10 @@
       "Bash(curl -sk -X POST https://stockpro-production-e8a9.up.railway.app/cron/nightly -H \"Authorization: Bearer stockpro1234567890abcdefghijklmn\")",
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(f\\\\\"{s['label']}: {s['stocks_count']} stocks \\({s['computed_at']}\\)\\\\\"\\) for s in d]\")",
       "Bash(curl -sk -X POST https://stockpro-production-e8a9.up.railway.app/cron/nightly -H 'Authorization: Bearer stockpro1234567890abcdefghijklmn' -w '\\\\nHTTP %{http_code}')",
-      "Bash(curl -sk \"https://stockpro-production-e8a9.up.railway.app/chart/RELIANCE?period=1mo\")"
+      "Bash(curl -sk \"https://stockpro-production-e8a9.up.railway.app/chart/RELIANCE?period=1mo\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(f\\\\\"Candles: {len\\(d.get\\('candles',[]\\)\\)}\\\\\"\\); c=d.get\\('candles',[]\\); c and print\\(f\\\\\"Latest: {c[-1]}\\\\\"\\)\")",
+      "Bash(curl -sk \"https://stockpro-production-e8a9.up.railway.app/chart/indices/snapshot\")",
+      "mcp__Claude_in_Chrome__tabs_context_mcp"
     ]
   }
 }

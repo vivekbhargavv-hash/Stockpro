@@ -25,10 +25,6 @@
     --text-muted: #475569;
   }
 
-  * {
-    @apply border-border;
-  }
-
   html {
     @apply antialiased;
     -webkit-tap-highlight-color: transparent;
