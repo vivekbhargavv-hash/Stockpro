@@ -3,6 +3,7 @@ import pandas as pd
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from signals.registry import SIGNALS, SIGNAL_META
 from data.nse500 import NSE_500
+from data.yf_session import get_session
 from db.supabase_client import upsert_signal, fetch_signal, fetch_all_signals
 from cache.redis_client import get_cached, set_cached, invalidate_signal
 
@@ -20,6 +21,7 @@ def _download_batch(tickers: list[str]) -> dict[str, pd.DataFrame]:
         auto_adjust=True,
         threads=True,
         progress=False,
+        session=get_session(),
     )
     result: dict[str, pd.DataFrame] = {}
     if len(tickers) == 1:

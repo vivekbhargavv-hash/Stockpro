@@ -1,5 +1,6 @@
 import yfinance as yf
 from fastapi import APIRouter, HTTPException, Query
+from data.yf_session import get_session
 
 router = APIRouter()
 
@@ -18,6 +19,7 @@ async def get_chart(
             interval=interval,
             auto_adjust=True,
             progress=False,
+            session=get_session(),
         )
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"Data fetch failed: {e}")
@@ -46,7 +48,7 @@ async def get_chart(
 async def get_quote(ticker: str):
     ns_ticker = ticker if ticker.endswith(".NS") else f"{ticker}.NS"
     try:
-        info = yf.Ticker(ns_ticker).fast_info
+        info = yf.Ticker(ns_ticker, session=get_session()).fast_info
         return {
             "ticker": ticker,
             "price": round(float(info.last_price), 2),
@@ -69,9 +71,10 @@ async def indices_snapshot():
         "NIFTY_MIDCAP": "^NSEMDCP50",
     }
     result = []
+    session = get_session()
     for name, sym in symbols.items():
         try:
-            info = yf.Ticker(sym).fast_info
+            info = yf.Ticker(sym, session=session).fast_info
             prev = info.previous_close
             last = info.last_price
             result.append({
